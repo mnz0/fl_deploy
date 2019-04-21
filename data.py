@@ -14,6 +14,7 @@ file_types = {
 
 
 def get_files(path):
+
 	files_list = []
 	os.path.abspath(path)
 	for root, dirs, files in os.walk(path):
@@ -24,21 +25,17 @@ def get_files(path):
 
 def sort_files(files_list):
 
-	# def get_ext():
-
-
 	for file in files_list:
+		if os.path.splitext(file)[1][1:] in file_types['media_formats']:  #media content detect! 
+			media_file = file
+			print(media_file + ' media here')
+			return media_file
 
-		if os.path.splitext(file)[1][1:] in file_types['media_formats']:  #get file format (without *dot) from file types collection
-		
-
+		if os.path.splitext(file)[1][1:] in file_types['arhives']:  #arhive content detect! 
+			arch_file = file
+			return arch_file
+			print(arch_file + ' archive this')
 	
-			print(file)
-
-	#TODO  sort sort files. DPX, EXR, TIFF etc.
-
-
-
 
 def project_folders_deploy():
 
@@ -59,8 +56,6 @@ def project_folders_deploy():
 		for folders_name in folders_pattern['result_pattern']:
 			os.mkdir(folders_name.upper())
 		os.chdir('..')
-#########################################################################
-
 
 # print(get_files(project_dir))
 sort_files(get_files(project_dir))
