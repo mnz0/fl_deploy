@@ -7,10 +7,8 @@ folders_pattern = {
 	'result_pattern': ['exr', 'png', 'tiff', 'dpx']}
 
 file_types = {
-	'media_formats': ['dpx', 'exr', 'png', 'tiff', 'jpeg', 'hdr', 'rat'], # Media formats collection
+	'media_formats': ['dpx', 'exr', 'png', 'tiff', 'jpeg', 'hdr', 'rat', 'tga'], # Media formats collection
 	'arhives': ['zip', 'rar', '7zip', 'tar'] }
-
-
 
 
 def get_files(path):
@@ -20,21 +18,24 @@ def get_files(path):
 	for root, dirs, files in os.walk(path):
 		for f  in files:
 			files_list.append(f)
+
 	return files_list
 
 
-def sort_files(files_list):
+def sort_files(infiles_list):
 
-	for file in files_list:
+	arch_files = []
+	media_files = []
+
+	for file in infiles_list:
+
 		if os.path.splitext(file)[1][1:] in file_types['media_formats']:  #media content detect! 
-			media_file = file
-			print(media_file + ' media here')
-			return media_file
+			media_files.append(file)
 
 		if os.path.splitext(file)[1][1:] in file_types['arhives']:  #arhive content detect! 
-			arch_file = file
-			return arch_file
-			print(arch_file + ' archive this')
+			arch_files.append(file)
+
+	return arch_files, media_files
 	
 
 def project_folders_deploy():
@@ -58,4 +59,4 @@ def project_folders_deploy():
 		os.chdir('..')
 
 # print(get_files(project_dir))
-sort_files(get_files(project_dir))
+print(sort_files(get_files(project_dir)))
