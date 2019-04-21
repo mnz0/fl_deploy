@@ -1,21 +1,41 @@
 import os
 
-project_dir = ''
+project_dir = r'F:\_work\test'
+	
+folders_pattern = {
+	'project_pattern': ['source', 'result', 'comp', 'render', 'track'],
+	'result_pattern': ['exr', 'png', 'tiff', 'dpx']}
 
 file_types = {
 	'media_formats': ['dpx', 'exr', 'png', 'tiff', 'jpeg', 'hdr', 'rat'], # Media formats collection
 	'arhives': ['zip', 'rar', '7zip', 'tar'] }
 
-folders_pattern = {
-	'project_pattern': ['source', 'result', 'comp', 'render', 'track'],
-	'result_pattern': ['exr', 'png', 'tiff', 'dpx']}
 
 
 
+def get_files(path):
+	files_list = []
+	os.path.abspath(path)
+	for root, dirs, files in os.walk(path):
+		for f  in files:
+			files_list.append(f)
+	return files_list
 
-def get_folders_and_files(path):
+
+def sort_files(files_list):
+
+	# def get_ext():
+
+
+	for file in files_list:
+
+		if os.path.splitext(file)[1][1:] in file_types['media_formats']:  #get file format (without *dot) from file types collection
+		
+
 	
+			print(file)
 
+	#TODO  sort sort files. DPX, EXR, TIFF etc.
 
 
 
@@ -39,6 +59,8 @@ def project_folders_deploy():
 		for folders_name in folders_pattern['result_pattern']:
 			os.mkdir(folders_name.upper())
 		os.chdir('..')
+#########################################################################
 
 
-project_folders_deploy()
+# print(get_files(project_dir))
+sort_files(get_files(project_dir))
