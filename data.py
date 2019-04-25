@@ -1,4 +1,7 @@
 import os
+import sys
+import subprocess #for copy files 
+
 
 project_dir = r'F:\_work\test'
 	
@@ -8,7 +11,16 @@ folders_pattern = {
 
 file_types = {
 	'media_formats': ['dpx', 'exr', 'png', 'tiff', 'jpeg', 'hdr', 'rat', 'tga'], # Media formats collection
-	'arhives': ['zip', 'rar', '7zip', 'tar'] }
+	'arhives': ['zip', 'rar', '7zip', 'tar']}
+	
+
+def check_source(dirname):
+
+	if len(os.listdir(dirname)) == 0 and os.path.isfile(dirname):
+		print('{} is empty'.format(dirname))
+		sys.exit()
+	else:
+		return True
 
 
 def get_files(path):
@@ -26,6 +38,7 @@ def sort_files(infiles_list):
 
 	arch_files = []
 	media_files = []
+	other_formats = []
 
 	for file in infiles_list:
 
@@ -35,10 +48,15 @@ def sort_files(infiles_list):
 		if os.path.splitext(file)[1][1:] in file_types['arhives']:  #arhive content detect! 
 			arch_files.append(file)
 
-	return arch_files, media_files
+		if os.path.splitext(file)[1][1:] in file_types['arhives'] != True and os.path.splitext(file)[0][1:] in file_types['media_formats'] != True: #Check other files
+			other_formats.append(file)
+			for f in other_formats:
+				print('File {} is not support', format(f)) 
+
+	return arch_files, media_files, other_formats
 	
 
-def project_folders_deploy():
+def project_folders_create():
 
 	""" This function makes folder structure for source files, ref and result sequences.
 		Folders struct get from "folder_patterns" dict.
@@ -58,5 +76,19 @@ def project_folders_deploy():
 			os.mkdir(folders_name.upper())
 		os.chdir('..')
 
-# print(get_files(project_dir))
-print(sort_files(get_files(project_dir)))
+
+def copy_files(src_path, dst_path):
+
+	'''
+	cross platform copy (I hope that`s work)
+	'''
+	if sys.platform.startswith('linux'):
+		subprocess.run(['cp', str(src_path), str(dst_path) ])
+	if sys.platform.startswith('win32'):
+
+
+
+
+def deploy():
+
+	
