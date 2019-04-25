@@ -48,12 +48,18 @@ def sort_files(infiles_list):
 		if os.path.splitext(file)[1][1:] in file_types['arhives']:  #arhive content detect! 
 			arch_files.append(file)
 
-		if os.path.splitext(file)[1][1:] in file_types['arhives'] != True and os.path.splitext(file)[0][1:] in file_types['media_formats'] != True: #Check other files
+		if os.path.splitext(file)[1][1:] in file_types['arhives'] == False and os.path.splitext(file)[0][1:] in file_types['media_formats'] == False: #Check other files
 			other_formats.append(file)
 			for f in other_formats:
 				print('File {} is not support', format(f)) 
 
 	return arch_files, media_files, other_formats
+
+
+def parse_filename(file):
+
+	file, extension = os.path.split('.')
+	return file, extension
 	
 
 def project_folders_create():
@@ -83,12 +89,22 @@ def copy_files(src_path, dst_path):
 	cross platform copy (I hope that`s work)
 	'''
 	if sys.platform.startswith('linux'):
-		subprocess.run(['cp', str(src_path), str(dst_path) ])
+		subprocess.run(['cp', str(src_path), str(dst_path)])
 	if sys.platform.startswith('win32'):
+		subprocess.run(['xcopy.exe', str(src_path), str(dst_path)])
 
 
+def main_deploy(folder):
+
+	if check_source(folder) == True:
+		files = get_files(folder)
+
+		archives = sort_files(files)[0]
+		media = sort_files(files)[1]
+		other = sort_files(files)[2]
+	print(media)
+	print(archives)
+	print(other)
 
 
-def deploy():
-
-	
+main_deploy(project_dir)
