@@ -26,9 +26,9 @@ def check_source(dirname):
 def get_files(path):
 
 	files_list = []
-	os.path.abspath(path)
-	for root, dirs, files in os.walk(path):
-		for f  in files:
+	path = os.path.abspath(path)
+	for file in os.listdir(path):
+		if os.path.isfile(file):
 			files_list.append(f)
 
 	return files_list
@@ -107,4 +107,5 @@ def main_deploy(folder):
 	print(other)
 
 
-main_deploy(project_dir)
+# main_deploy(project_dir)
+print(get_files(project_dir))
