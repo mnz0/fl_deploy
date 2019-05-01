@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess #for copy files 
 
+project_name = r' '
 
 project_dir = r'F:\_work\test'
 	
@@ -26,41 +27,17 @@ def check_source(dirname):
 def get_files(path):
 
 	files_list = []
-	path = os.path.abspath(path)
-	for file in os.listdir(path):
-		if os.path.isfile(file):
-			files_list.append(f)
+	folder_name = []
 
-	return files_list
+	for element in os.listdir(path):
 
+		# if element in os.path.isdir(path):
 
-def sort_files(infiles_list):
+		# if element in os.path.isfile(path):
+		
 
-	arch_files = []
-	media_files = []
-	other_formats = []
+	# return files_list, folder_name
 
-	for file in infiles_list:
-
-		if os.path.splitext(file)[1][1:] in file_types['media_formats']:  #media content detect! 
-			media_files.append(file)
-
-		if os.path.splitext(file)[1][1:] in file_types['arhives']:  #arhive content detect! 
-			arch_files.append(file)
-
-		if os.path.splitext(file)[1][1:] in file_types['arhives'] == False and os.path.splitext(file)[0][1:] in file_types['media_formats'] == False: #Check other files
-			other_formats.append(file)
-			for f in other_formats:
-				print('File {} is not support', format(f)) 
-
-	return arch_files, media_files, other_formats
-
-
-def parse_filename(file):
-
-	file, extension = os.path.split('.')
-	return file, extension
-	
 
 def project_folders_create():
 
@@ -70,10 +47,10 @@ def project_folders_create():
 
 	for folders_name in folders_pattern['project_pattern']:
 
-			if 'result' in folders_pattern['project_pattern']:
-				os.mkdir(folders_name.upper())
-			else:
-				print('Pattern "result" in folders pattern is not exist')
+		if 'result' in folders_pattern['project_pattern']:
+			os.mkdir(folders_name.upper())
+		else:
+			print('Pattern "result" in folders pattern is not exist')
 
 	ready_folders = [files for files in os.listdir('.')]
 	if 'RESULT' in ready_folders:
@@ -97,15 +74,16 @@ def copy_files(src_path, dst_path):
 def main_deploy(folder):
 
 	if check_source(folder) == True:
-		files = get_files(folder)
 
-		archives = sort_files(files)[0]
-		media = sort_files(files)[1]
-		other = sort_files(files)[2]
-	print(media)
-	print(archives)
-	print(other)
+		files = get_files(folder)
+		# archives = sort_files(files)[0]
+		# media = sort_files(files)[1]
+		# other = sort_files(files)[2]
+
+		print(media)
+		print(archives)
+		print(other)
 
 
 # main_deploy(project_dir)
-print(get_files(project_dir))
+get_files(project_dir)
