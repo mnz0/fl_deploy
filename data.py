@@ -12,7 +12,8 @@ folders_pattern = {
 
 file_types = {
 	'media_formats': ['dpx', 'exr', 'png', 'tiff', 'jpeg', 'hdr', 'rat', 'tga'], # Media formats collection
-	'arhives': ['zip', 'rar', '7zip', 'tar', 'tar']}
+	'media_containers': ['mp4', 'mov', 'avi', 'mpeg', 'webm'],  #media containers
+	'arhives': ['zip', 'rar', '7zip', 'tar', 'tar']} #archive formats 
 	
 
 def get_content(folder):
@@ -86,12 +87,6 @@ def main_deploy(folder):
 			if os.path.splitext(it_files)[1][1:] in file_types['arhives']:
 
 				print(it_files)
-
-			if os.path.splitext(it_files)[1][1:] not in file_types['arhives']:
-				for f in unsuported_files:
-					print("{} files is not supported".format(f))
-					# print("Not media files here")
-
 		
 	if len(folders) > 0:
 
@@ -99,6 +94,12 @@ def main_deploy(folder):
 
 	if len(folders) > 0 and len(files) > 0:
 		print('Foldrer contain files and folder "tmp line"')
+
+	if len(unsuported_files) > 0:
+		for unsuported in unsuported_files:
+			if os.path.splitext(unsuported)[1][1:] not in file_types['media_formats'] and os.path.splitext(unsuported)[1][1:] not in file_types['media_containers']:
+				print("{} files is not supported".format(unsuported))
+
 
 	else:
 		print("Folder is empty")
