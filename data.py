@@ -19,21 +19,22 @@ def get_content(folder):
 
 	folder_list = []
 	file_list = []
+	unsuported_files = []
 
 	for f_check in os.listdir(folder):
 
 		to_check = os.path.join(project_dir, f_check)  # File section 
 		
-		if os.path.isfile(to_check):
+		if os.path.isfile(to_check) and os.path.splitext(to_check)[1][1:] in file_types['arhives']:
 			 file_list.append(to_check)
+
+		if os.path.isfile(to_check) and os.path.splitext(to_check)[1][1:] not in file_types['arhives']:
+			unsuported_files.append(to_check)
 
 		if os.path.isdir(to_check): # Folder section 
 			folder_list.append(to_check)
 			
-	return file_list, folder_list
-
-	
-
+	return file_list, folder_list, unsuported_files
 
 
 def project_folders_create():
@@ -67,16 +68,33 @@ def copy_files(src_path, dst_path):
 	if sys.platform.startswith('win32'):
 		subprocess.run(['xcopy.exe', str(src_path), str(dst_path)])
 
+def unpack(file):
+	#TODO subrocess based unpack code 
+	pass
+
 
 def main_deploy(folder):
 
 	files = get_content(folder)[0]
 	folders = get_content(folder)[1]
+	unsuported_files = get_content(folder)[2] #for .txt, fb2, .doc etc formats 
 
 	if len(files) > 0:
-		print(files)
+
+		for it_files in files:
+
+			if os.path.splitext(it_files)[1][1:] in file_types['arhives']:
+
+				print(it_files)
+
+			if os.path.splitext(it_files)[1][1:] not in file_types['arhives']:
+				for f in unsuported_files:
+					print("{} files is not supported".format(f))
+					# print("Not media files here")
+
 		
 	if len(folders) > 0:
+
 		print(folders)
 
 	if len(folders) > 0 and len(files) > 0:
@@ -85,8 +103,6 @@ def main_deploy(folder):
 	else:
 		print("Folder is empty")
 		sys.exit()
-
-	
 
 
 main_deploy(project_dir)
