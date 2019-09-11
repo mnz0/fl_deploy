@@ -1,6 +1,7 @@
 import os
 import sys
-import subprocess #for copy files 
+import subprocess  #for copy files 
+import imaplib
 
 project_name = r' '
 
@@ -37,6 +38,10 @@ def get_content(folder):
 			
 	return file_list, folder_list, unsuported_files
 
+def make_dir(dirname):
+	os.mkdir(dirname)
+	return str(dirname)
+	
 
 def project_folders_create():
 
@@ -69,8 +74,16 @@ def copy_files(src_path, dst_path):
 	if sys.platform.startswith('win32'):
 		subprocess.run(['xcopy.exe', str(src_path), str(dst_path)])
 
-def unpack(file):
-	#TODO subrocess based unpack code 
+def unpack(source_file, dest_file):
+	try:
+		import unrar
+
+	except:
+		subprocess.run(['pip', 'install', 'unrar'])
+
+	else:
+		ImportError
+	
 	pass
 
 
@@ -80,16 +93,15 @@ def main_deploy(folder):
 	folders = get_content(folder)[1]
 	unsuported_files = get_content(folder)[2] #for .txt, fb2, .doc etc formats 
 
-	if len(files) > 0:
+	if len(files) > 0: #unsupoerted files block
 
 		for it_files in files:
-
-			if os.path.splitext(it_files)[1][1:] in file_types['arhives']:
+			if os.path.splitext(it_files)[2][1:] in file_types['arhives']:
 
 				print(it_files)
 		
 	if len(folders) > 0:
-
+		#TODO folder analizer 
 		print(folders)
 
 	if len(folders) > 0 and len(files) > 0:
@@ -99,8 +111,6 @@ def main_deploy(folder):
 		for unsuported in unsuported_files:
 			if os.path.splitext(unsuported)[1][1:] not in file_types['media_formats'] and os.path.splitext(unsuported)[1][1:] not in file_types['media_containers']:
 				print("{} files is not supported".format(unsuported))
-
-
 	else:
 		print("Folder is empty")
 		sys.exit()
